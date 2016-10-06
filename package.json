@@ -1,0 +1,40 @@
+{
+  "name": "basic-mailer",
+  "version": "1.0.0",
+  "description": "Responsive mailer design workflow\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ukthapa/basic-mailer.git"
+  },
+  "keywords": [
+    "email",
+    "template",
+    "mailer-workflow"
+  ],
+  "author": "Uttam Kr. Thapa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ukthapa/basic-mailer/issues"
+  },
+  "homepage": "https://github.com/ukthapa/basic-mailer",
+  "devDependencies": {
+    "browser-sync": "^2.17.0",
+    "gulp": "^3.9.1",
+    "gulp-assetpaths": "^0.3.0",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-data": "^1.2.1",
+    "gulp-imagemin": "^3.0.3",
+    "gulp-inline-css": "^3.1.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-swig": "^0.8.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
+    "run-sequence": "^1.2.2"
+  }
+}
