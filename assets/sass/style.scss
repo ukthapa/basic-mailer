@@ -1,0 +1,523 @@
+@import "mixins";
+
+/* ===========================================
+CLIENT-SPECIFIC FIXED STYLES 
+============================================== */
+#outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */
+.ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */
+body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+img{-ms-interpolation-mode:bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */
+
+
+/* ===========================================
+RESET STYLES 
+============================================== */ 
+body{margin:0; padding:0;}
+img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+table{border-collapse:collapse !important;}
+body, #wrapperTable, #wrapperCell{height:100% !important; margin:0; padding:0; width:100% !important;}
+p {margin:0; padding:0;}
+
+/* ===========================================
+TEMPLATE STYLE 
+============================================== */
+
+
+/**
+* @tab Page
+* @section background style
+* @tip Set the background color and top border for your email. You may want to choose colors that match your company's branding.
+* @theme page
+*/
+body, #wrapperTable{
+	/*@editable*/ background-color:#F0EEF3;
+}
+
+
+/**
+* @tab Page
+* @section mailer wrapper padding
+* @tip Set the outer spacer.
+* @theme page
+*/
+#wrapperCell {
+	/*@editable*/ padding-top: 0;
+	/*@editable*/ padding-right: 0;
+	/*@editable*/ padding-bottom: 0;
+	/*@editable*/ padding-left: 0;
+}
+
+
+/**
+* @tab Page
+* @section HR Style
+* @tip Set the style of hr line.			 
+*/
+
+.hr-solid  {
+	height:1px; 
+	border:0 none; 
+	width: 100%;
+	/*@editable*/ color: #D7DFE3; 
+	/*@editable*/ background-color: #D7DFE3;
+}
+
+
+/**
+* @tab Page
+* @section link color
+* @tip Set the style of anchor link.			 
+*/
+
+.link {				
+	/*@editable*/ color: #1287D9; 
+	/*@editable*/ text-decoration: underline; 
+}
+
+
+/* ========== Heading Style Start ============ */
+
+/**
+* @tab Page
+* @section heading 1
+* @tip Set the styling for all first-level headings in your email.
+* @style heading 1
+*/
+
+h1 {
+	/*@editable*/ color:#5d5d5d !important;
+	display:block;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:26px;
+	/*@editable*/ font-style:normal;
+	/*@editable*/ font-weight:normal;
+	/*@editable*/ line-height:100%;
+	/*@editable*/ letter-spacing:normal;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	/*@editable*/ text-align:left;
+}
+
+/**
+* @tab Page
+* @section heading 2
+* @tip Set the styling for all second-level headings in your email.
+* @style heading 2
+*/
+h2 {
+	/*@editable*/ color:#5d5d5d !important;
+	display:block;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:20px;
+	/*@editable*/ font-style:normal;
+	/*@editable*/ font-weight:normal;
+	/*@editable*/ line-height:100%;
+	/*@editable*/ letter-spacing:normal;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	/*@editable*/ text-align:left;
+
+}
+
+/**
+* @tab Page
+* @section heading 3
+* @tip Set the styling for all third-level headings in your email.
+* @style heading 3
+*/
+h3{
+	/*@editable*/ color:#5d5d5d !important;
+	display:block;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:16px;
+	/*@editable*/ font-style:italic;
+	/*@editable*/ font-weight:normal;
+	/*@editable*/ line-height:100%;
+	/*@editable*/ letter-spacing:normal;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	/*@editable*/ text-align:left;
+}
+
+/**
+* @tab Page
+* @section heading 4
+* @tip Set the styling for all forth-level headings in your email.
+* @style heading 4
+*/
+h4{
+	/*@editable*/ color:#5d5d5d !important;
+	display:block;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:14px;
+	/*@editable*/ font-style:italic;
+	/*@editable*/ font-weight:normal;
+	/*@editable*/ line-height:100%;
+	/*@editable*/ letter-spacing:normal;
+	margin-top:0;
+	margin-right:0;
+	margin-bottom:10px;
+	margin-left:0;
+	/*@editable*/ text-align:left;
+
+}
+
+
+/* ========== Heading Style End ============ */
+
+
+
+
+/* ========== Johnson Box Style Start ============ */
+
+/**
+* @tab Pre Header
+* @section Preview Snippet style
+* @tip Set the style of Preview Snippet Text.
+*/
+.preVeiwTextHidden {
+	display:none;
+	font-size:1px;
+	/*@editable*/color:#fcfcfc;
+	line-height:1px;
+	max-height:0px;
+	max-width:0px;
+	opacity:0;
+	overflow:hidden;
+}
+
+/**
+* @tab Pre Header
+* @section Pre Header
+* @tip Set the style of View in Browser Link.
+*/
+.viewInBrowser {
+	/*@editable*/ color:#808080;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:11px;
+	/*@editable*/ line-height:100%;			
+	/*@editable*/ text-align:right;
+}
+
+
+/**
+* @tab Header 
+* @section Johnson Box - background & Space
+* @tip Set the background color and spacing of Johnson Box.
+* @theme header
+*/
+#headerWrapper {
+	/*@editable*/ background-color:#F0EEF3;
+	/*@editable*/ padding-top: 20px;
+	/*@editable*/ padding-right: 20px;
+	/*@editable*/ padding-bottom: 20px;
+	/*@editable*/ padding-left: 20px;
+}
+
+
+/**
+* @tab Header
+* @section header width 
+* @tip Set the header width of your mailer.
+* @theme header
+*/
+#header {
+	/*@editable*/ width:600px;
+}
+
+
+
+/**
+* @tab Header
+* @section Header section text style
+* @tip Set the style of header section text.
+*/
+.headerContent {
+	/*@editable*/ color:#808080;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:14px;
+	/*@editable*/ line-height:150%;			
+	/*@editable*/ text-align:left;
+}
+
+
+/* ========== Johnson Box Style End ============ */
+
+
+
+/* ========== Body Style Start ============ */
+/**
+* @tab Body
+* @section Main Content Section background style 
+* @tip Set the background color of Main Content Section.
+*/
+#contentWrapper {
+	/*@editable*/ background-color:#F0EEF3;
+	/*@editable*/ padding-top: 0px;
+	/*@editable*/ padding-right: 20px;
+	/*@editable*/ padding-bottom: 0px;
+	/*@editable*/ padding-left: 20px;
+}
+
+
+/**
+* @tab Body
+* @section body style
+* @tip Set width for your email's body area.
+*/
+#content {
+	/*@editable*/ width:600px;
+}
+
+
+/**
+* @tab Card
+* @section Card block Style
+* @tip Set the style for Card block
+*/
+.card {
+	    		  border-collapse: separate !important;
+	/*@editable*/ border-radius: 5px;
+	/*@editable*/ border-width: 1px;
+	/*@editable*/ border-style: solid;
+	/*@editable*/ border-color: #d8d8d8;
+	/*@editable*/ background-color: #FFFFFF;
+}
+
+/**
+* @tab Card
+* @section Card Supporting Text
+* @tip Set the style of supporting text
+*/
+.supportingText {
+	/*@editable*/ color:#808080;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:14px;
+	/*@editable*/ line-height:150%;			
+	/*@editable*/ text-align:left;
+}
+
+img.richMedia {
+	width: 100%;
+	height: auto;
+}
+
+/* ========== Body Style End ============ */
+
+
+
+
+
+
+
+/* ========== Footer Section Style Start ============ */
+
+/**
+* @tab Footer
+* @section footer background
+* @tip Set the background color.
+*/
+#footerWrapper {
+	/*@editable*/ background-color: #F0EEF3;
+	/*@editable*/ padding-top: 0px;
+	/*@editable*/ padding-right: 20px;
+	/*@editable*/ padding-bottom: 20px;
+	/*@editable*/ padding-left: 20px;
+}
+
+
+
+/**
+* @tab Footer
+* @section footer style
+* @tip Set width for your email's footer area.
+*/
+#footer {
+	/*@editable*/ width:600px;
+}
+
+
+/**
+* @tab Footer
+* @section footer text
+* @tip Set the styling for your email's footer text. Choose a size and color that is easy to read.
+*/
+.footerContent{
+	/*@editable*/ color:#808080;
+	/*@editable*/ font-family:'Myriad Pro', 'Trebuchet MS', Helvetica, sans-serif;
+	/*@editable*/ font-size:12px;
+	/*@editable*/ line-height:125%;			
+	/*@editable*/ text-align:left;
+}
+
+/**
+* @tab Footer
+* @section footer link
+* @tip Set the styling for your email's footer links. Choose a color that helps them stand out from your text.
+*/
+.footerContent a:link, .footerContent a:visited, /* Yahoo! Mail Override */ .footerContent a .yshortcuts, .footerContent a span /* Yahoo! Mail Override */{
+	/*@editable*/ color:#606060 ;
+	/*@editable*/ font-weight:normal;
+	/*@editable*/ text-decoration:underline;
+}
+
+/**
+* @tab Footer
+* @section footer border top
+* @tip Set top border table.
+*/
+.footerBorderTop {
+	/*@editable*/ border-top-width: 1px;
+    /*@editable*/ border-top-style: dotted;
+    /*@editable*/ border-top-color: #bebebe;
+}
+
+/**
+* @tab Footer
+* @section footer border bottom
+* @tip Set bottom border table.
+*/
+.footerBorderBottom {
+	/*@editable*/ border-bottom-width: 1px;
+    /*@editable*/ border-bottom-style: dotted;
+    /*@editable*/ border-bottom-color: #bebebe;
+}
+
+
+
+/* ========== Footer Section Style End ============ */
+
+
+
+
+
+
+/* *******************************************
+MOBILE FRIENDLY STYLE 
+********************************************** */
+@media only screen and (max-width: 480px){
+
+ 	/* ===========================================
+    CLIENT-SPECIFIC FIXED MOBILE STYLES 
+    ============================================== */
+	body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:none !important;} /* Prevent Webkit platforms from changing default text sizes */
+    body{width:100% !important; min-width:100% !important;} /* Prevent iOS Mail from adding padding to the body */
+
+	/* ===========================================
+	MOBILE RESET
+	============================================== */
+	#wrapperCell {
+		padding: 0px !important;
+	}
+
+	/* ===========================================
+	MOBILE STYLE
+	============================================== */
+
+
+
+	/* ========== Johnson Box Style Start ============ */
+	/**
+	* @tab Mobile Styles
+	* @section header style
+	* @tip Set width for your email's header area.
+	* @theme footer
+	*/
+	#header {
+		max-width:600px !important;
+		/*@editable*/ width:100% !important;
+	}
+
+
+	/**
+	* @tab Mobile Styles
+	* @section Header section text style
+	* @tip Set the style of header section text.
+	*/
+	.headerContent {
+		/*@editable*/ font-size:14px !important;
+		/*@editable*/ line-height:150% !important;		
+		/*@editable*/ text-align:left !important;
+	}
+
+	/* ========== Johnson Box Style End ============ */
+
+
+
+    
+	/* ========== Body Style Start ============ */
+
+    /**
+	* @tab Mobile Styles
+	* @section body style
+	* @tip Set width for your email's body area.
+	* @theme footer
+	*/
+	#content {
+		max-width:600px !important;
+		/*@editable*/ width:100% !important;
+	}
+
+
+	/**
+	* @tab Mobile Styles
+	* @section Card Supporting Text
+	* @tip Set the style of supporting text
+	*/
+	.supportingText {
+		/*@editable*/ font-size:14px !important;
+		/*@editable*/ line-height:150% !important;		
+		/*@editable*/ text-align:justify !important;
+	}
+
+
+
+	/* ========== Body Style Start ============ */
+
+
+
+	
+	/* ========== Footer Section Style Start ============ */
+
+	/**
+	* @tab Mobile Styles
+	* @section footer background
+	* @tip Set the background color.
+	* @theme footer
+	*/
+	#footerWrapper {
+		/*@editable*/ padding: 10px !important;
+	}
+
+	/**
+	* @tab Mobile Styles
+	* @section footer style
+	* @tip Set width for your email's footer area.
+	* @theme footer
+	*/
+	#footer {
+		max-width:600px !important;
+		/*@editable*/ width:100% !important;
+	}
+
+	.test {
+		
+	}
+
+
+	/* ========== Footer Section Style End ============ */
+
+
+}
+
+
+
+
