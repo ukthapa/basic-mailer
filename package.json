@@ -28,9 +28,11 @@
     "gulp-assetpaths": "^0.3.0",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-data": "^1.2.1",
+    "gulp-delete-lines": "0.0.7",
     "gulp-imagemin": "^3.0.3",
     "gulp-include": "^2.3.1",
     "gulp-inline-css": "^3.1.0",
+    "gulp-inline-source": "^3.0.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
@@ -40,6 +42,7 @@
     "gulp-util": "^3.0.7",
     "gulp-utm2html": "0.0.1",
     "htmlstrip-native": "^0.1.3",
+    "nodemailer": "^2.6.4",
     "run-sequence": "^1.2.2"
   }
 }

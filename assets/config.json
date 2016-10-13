@@ -9,10 +9,10 @@
 
   "auth": {
     "mailgun": {
-        "user": "SMTP User",
-        "pass": "SMTP Password"
+        "user": "ukthapa",
+        "pass": "Utt@m1010"
     }
   },
 
-  "litmus": "Your Litmus static email address"
+  "litmus": "mayank@fusioncharts.com"
 }

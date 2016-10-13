@@ -55,3 +55,6 @@ bower_components
 ### SRC ###
 *.zip
 node_modules
+
+dev/
+prod/

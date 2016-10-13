@@ -7,23 +7,26 @@
 var gulp            = require( 'gulp' ),
     sass            = require( 'gulp-sass' ),
     //inlineCss       = require( 'gulp-inline-css' ),
+    //inlinesource    = require('gulp-inline-source'),
     browserSync     = require( 'browser-sync' ),
     reload          = browserSync.reload,
     sequence        = require( 'run-sequence' ),
     plumber         = require( 'gulp-plumber' ),
-    //rename          = require( 'gulp-rename' ),
+    rename          = require( 'gulp-rename' ),
     //data            = require( 'gulp-data' ),
     //swig            = require( 'gulp-swig' ),
     gutil           = require( 'gulp-util' ),
-    assetpath       = require( 'gulp-assetpaths' ), // Change paths of assets from one environment to another Works for anything included with href, src, or url attributes
+    assetpaths      = require( 'gulp-assetpaths' ), // Change paths of assets from one environment to another Works for anything included with href, src, or url attributes
     autoprefixer    = require( 'gulp-autoprefixer' ), // Prefix CSS for different browser 
     imagemin        = require( 'gulp-imagemin' ), // Optimize the images
-    //del 			      = require( 'del'), // Delete the unwanted files and folder in production before going LIVE
-    utm2html 	      = require('gulp-utm2html'),
+    //del 			  = require( 'del'), // Delete the unwanted files and folder in production before going LIVE
+    utm2html 	    = require('gulp-utm2html'),
     fs              = require('fs'),
     html_strip      = require('htmlstrip-native'),
-    include      	  = require('gulp-include'),
-    substituter  	  = require('gulp-substituter'),
+    include      	= require('gulp-include'),
+    substituter  	= require('gulp-substituter'),
+    deleteLines     = require('gulp-delete-lines'),
+    nodemailer      = require('nodemailer'),
     //context         = require( './dev/test-data.js' );
     config          = require('./assets/config.json');
 
@@ -37,8 +40,8 @@ var gulp            = require( 'gulp' ),
 var assetsURL       = "./assets/", 
     devUrl          = "./dev/",
     prodUrl         = "./prod/",
-    liveURL         = "", // Use this url to replace the local image url to LIVE URL / Mailchimp URL or CDN url
-    utmCode			    = ""; // UTM Code
+    liveURL         = "https://gallery.mailchimp.com/70067f73cf22a3620cb2d8867", // Use this url to replace the local image url to LIVE URL / Mailchimp URL or CDN url
+    utmCode			= ""; // UTM Code
 
 
 
@@ -88,7 +91,8 @@ gulp.task( 'html', function() {
         .pipe(plumber(function(error) {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
-        })) // report errors w/o stopping Gulp     
+        })) // report errors w/o stopping Gulp 
+        .pipe(rename("index.html"))    
         .pipe( gulp.dest(devUrl) )
         .pipe(reload({stream:true}));
 });
@@ -118,15 +122,25 @@ gulp.task( 'browserSync', function() {
 //////////////////////////////////////////
 
 gulp.task('embbedStyle', function(){
-	gulp.src(devUrl + '*.html')  
+	gulp.src(devUrl + 'index.html')  
     .pipe(substituter({
       mediaqueryHeader: '<style type="text/css">',
-      mediaqueryBody: '//= include'+ devUrl + 'css/*.css',
+      mediaqueryBody: '//= include ' + 'css/*.css',
       mediaqueryFooter: '</style>'
     }))
     .pipe(include())
+    // .pipe(inlineCss({
+    //     removeLinkTags: true
+    // }))
+    // .pipe(inlinesource())
+    .pipe(deleteLines({
+      'filters': [
+      /<link\s+rel=["']/i
+      ]
+    }))
     .pipe(gulp.dest(prodUrl))
 });
+
 
 
 ///////////////////////////////////////////
@@ -138,9 +152,9 @@ gulp.task('embbedStyle', function(){
 gulp.task('change-paths', function(){
   return gulp.src([devUrl + '*.html'])
     .pipe(assetpaths({
-      newAssetsURL: '',
-      oldAssetsURL : 'images/',
-      //docRoot : 'public_html',
+      newDomain:  liveURL,
+      oldDomain : 'images/',
+      docRoot : 'public_html',
       filetypes : ['jpg','jpeg','png','ico','gif','js','css'],
       //customAttributes: ['data-custom'],
       templates: true
@@ -177,7 +191,7 @@ gulp.task('add-utm-code', function(){
 gulp.task('watch', function() {
     gulp.watch(assetsURL + '/sass/*.scss', ['sass']);
     gulp.watch(assetsURL + '*.html', ['html']);
-    gulp.watch(devUrl + 'css/*.css', ['html']);
+    gulp.watch(devUrl + 'css/*.css');
 });
 
 
@@ -222,7 +236,7 @@ gulp.task( 'build', function() {
 //////////////////////////////////////////
 
 gulp.task('send', function () {
-    return sendEmail(util.env.template, config.testing.to);
+    return sendEmail(gutil.env.template, config.testing.to);
 });
 
 
@@ -234,7 +248,7 @@ gulp.task('send', function () {
 //////////////////////////////////////////
 
 gulp.task('litmus', function () {
-    return sendEmail(util.env.template, config.litmus);
+    return sendEmail(gutil.env.template, config.litmus);
 });
 
 
@@ -272,19 +286,19 @@ function sendEmail(template, recipient) {
 
         transporter.sendMail(mailOptions, function(error, info){
             if(error){
-                return util.log(error);
+                return gutil.log(error);
             }else{
-                return util.log('Message sent: ' + info.response);
+                return gutil.log('Message sent: ' + info.response);
             }
         });
 
     } catch (e) {
         if(e.code == 'ENOENT') {
-            util.log('There was an error. Check your template name to make sure it exists in ' + prodUrl);
+            gutil.log('There was an error. Check your template name to make sure it exists in ' + prodUrl);
         } else if(e instanceof TypeError) {
-            util.log('There was an error. Please check your config.json to make sure everything is spelled correctly');
+            gutil.log('There was an error. Please check your config.json to make sure everything is spelled correctly');
         } else {
-            util.log(e);
+            gutil.log(e);
         }
     }
 }
