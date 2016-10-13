@@ -1,45 +1,290 @@
-// Import all necessary modules
+///////////////////////////////////////////
+//
+//	Required Plugins
+//	
+//////////////////////////////////////////
+
 var gulp            = require( 'gulp' ),
     sass            = require( 'gulp-sass' ),
-    inlineCss       = require( 'gulp-inline-css' ),
-    bs              = require( 'browser-sync' ).create(),
+    //inlineCss       = require( 'gulp-inline-css' ),
+    browserSync     = require( 'browser-sync' ),
+    reload          = browserSync.reload,
     sequence        = require( 'run-sequence' ),
     plumber         = require( 'gulp-plumber' ),
-    rename          = require( 'gulp-rename' ),
-    data            = require( 'gulp-data' ),
-    swig            = require( 'gulp-swig' ),
+    //rename          = require( 'gulp-rename' ),
+    //data            = require( 'gulp-data' ),
+    //swig            = require( 'gulp-swig' ),
     gutil           = require( 'gulp-util' ),
-    assetpath       = require( 'gulp-assetpaths' ),
-    autoprefixer    = require( 'gulp-autoprefixer' ),
-    imagemin        = require( 'gulp-imagemin' ),
-    context         = require( './dev/test-data.js' );
+    assetpath       = require( 'gulp-assetpaths' ), // Change paths of assets from one environment to another Works for anything included with href, src, or url attributes
+    autoprefixer    = require( 'gulp-autoprefixer' ), // Prefix CSS for different browser 
+    imagemin        = require( 'gulp-imagemin' ), // Optimize the images
+    //del 			      = require( 'del'), // Delete the unwanted files and folder in production before going LIVE
+    utm2html 	      = require('gulp-utm2html'),
+    fs              = require('fs'),
+    html_strip      = require('htmlstrip-native'),
+    include      	  = require('gulp-include'),
+    substituter  	  = require('gulp-substituter'),
+    //context         = require( './dev/test-data.js' );
+    config          = require('./assets/config.json');
 
 
-// Assets and other's path   
+///////////////////////////////////////////
+//
+//	Path 
+//	
+//////////////////////////////////////////
+
 var assetsURL       = "./assets/", 
     devUrl          = "./dev/",
     prodUrl         = "./prod/",
-    liveURL         = "";// Use this url to replace the local image url to LIVE URL / Mailchimp URL or CDN url
+    liveURL         = "", // Use this url to replace the local image url to LIVE URL / Mailchimp URL or CDN url
+    utmCode			    = ""; // UTM Code
 
 
-// Tas: Optimize image
+
+
+
+///////////////////////////////////////////
+//
+//	Task: Optimize image
+//	
+//////////////////////////////////////////
+
 gulp.task('imgoptimize', function () {
-    gulp.src(rawImages + "images/*")
+    gulp.src(assetsURL + 'images/*.{png,jpg,jpeg,gif,svg}')
         .pipe(imagemin())
         .pipe(gulp.dest(devUrl + "images"))
 });
 
-// Task: Compile stylesheet.sass and save it as stylesheet.css
+
+///////////////////////////////////////////
+//
+//	Task: Compile stylesheet.sass and save it as stylesheet.css
+//	
+//////////////////////////////////////////
+
 gulp.task( 'sass', function() {
-    gulp.src(assetsURL + "stylesheet.scss")
+    gulp.src(assetsURL + "sass/*.scss")
         .pipe(plumber(function(error) {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
         })) // report errors w/o stopping Gulp
         .pipe(sass())
-        .pipe(autoprefixer({browsers: ['last 2 version']}))
-        .pipe( gulp.dest(devUrl + "css") );
+        .pipe(autoprefixer({browsers: ['last 3 version']}))
+        .pipe( gulp.dest(devUrl + "css") )
+        .pipe(reload({stream:true}));
 });
 
 
-// Task: Compile stylesheet.sass and save it as stylesheet.css
+
+///////////////////////////////////////////
+//
+//	Task: HTML 
+//	
+//////////////////////////////////////////
+
+gulp.task( 'html', function() {
+    gulp.src(assetsURL + "*.html")
+        .pipe(plumber(function(error) {
+            gutil.log(gutil.colors.red(error.message));
+            this.emit('end');
+        })) // report errors w/o stopping Gulp     
+        .pipe( gulp.dest(devUrl) )
+        .pipe(reload({stream:true}));
+});
+
+
+
+///////////////////////////////////////////
+//
+//	Task: Browser-Sync
+//	
+//////////////////////////////////////////
+
+gulp.task( 'browserSync', function() {
+	browserSync.init([devUrl + 'css/*.css',  devUrl + '*.html'], {
+	    server: {
+	      baseDir: devUrl
+	    }
+  	});	
+});
+
+
+
+///////////////////////////////////////////
+//
+//	Task: Embbed the style in Head section in production
+//	
+//////////////////////////////////////////
+
+gulp.task('embbedStyle', function(){
+	gulp.src(devUrl + '*.html')  
+    .pipe(substituter({
+      mediaqueryHeader: '<style type="text/css">',
+      mediaqueryBody: '//= include'+ devUrl + 'css/*.css',
+      mediaqueryFooter: '</style>'
+    }))
+    .pipe(include())
+    .pipe(gulp.dest(prodUrl))
+});
+
+
+///////////////////////////////////////////
+//
+//	Task: Change path of all assets to target production url
+//	
+//////////////////////////////////////////
+
+gulp.task('change-paths', function(){
+  return gulp.src([devUrl + '*.html'])
+    .pipe(assetpaths({
+      newAssetsURL: '',
+      oldAssetsURL : 'images/',
+      //docRoot : 'public_html',
+      filetypes : ['jpg','jpeg','png','ico','gif','js','css'],
+      //customAttributes: ['data-custom'],
+      templates: true
+     }))
+    .pipe(gulp.dest(prodUrl))
+});
+
+
+
+///////////////////////////////////////////
+//
+//	Task: Add UTM CODE
+//	
+//////////////////////////////////////////
+
+gulp.task('add-utm-code', function(){
+  return gulp.src([devUrl + '*.html'])
+    .pipe(utm2html({
+        source: 'source',
+        medium: 'medium',
+        campaign: 'campaign',
+        term: 'term',
+        content: 'content'}))
+    .pipe(gulp.dest(devUrl))
+});
+
+
+///////////////////////////////////////////
+//
+//	Task: Watch
+//	
+//////////////////////////////////////////
+
+gulp.task('watch', function() {
+    gulp.watch(assetsURL + '/sass/*.scss', ['sass']);
+    gulp.watch(assetsURL + '*.html', ['html']);
+    gulp.watch(devUrl + 'css/*.css', ['html']);
+});
+
+
+///////////////////////////////////////////
+//
+//	Task: Default 
+//	
+//////////////////////////////////////////
+
+gulp.task('default', ['sass', 'browserSync', 'html', 'watch']);
+
+
+
+
+///////////////////////////////////////////
+//
+//	Task: Production Build 
+//	
+//////////////////////////////////////////
+
+gulp.task( 'build', function() {
+
+});
+
+
+
+
+
+//********************************************
+// Inorder to send test mail and litmus testing Read: https://github.com/darylldoyle/Gulp-Email-Creator
+// 
+// Command to send test mail :  gulp send --template="index.html"
+// Command to send litmus for testing : gulp litmus --template="index.html"
+//********************************************
+
+
+
+///////////////////////////////////////////
+//
+//  Task: Send test mail 
+//  
+//////////////////////////////////////////
+
+gulp.task('send', function () {
+    return sendEmail(util.env.template, config.testing.to);
+});
+
+
+
+///////////////////////////////////////////
+//
+//  Task: Send test mail 
+//  
+//////////////////////////////////////////
+
+gulp.task('litmus', function () {
+    return sendEmail(util.env.template, config.litmus);
+});
+
+
+
+
+function sendEmail(template, recipient) {
+    try {
+
+        var options = {
+            include_script : false,
+            include_style : false,
+            compact_whitespace : true,
+            include_attributes : { 'alt': true }
+        };
+
+        var templatePath = prodUrl + template;
+
+        var transporter = nodemailer.createTransport({
+            service: 'Mailgun',
+            auth: {
+                user: config.auth.mailgun.user,
+                pass: config.auth.mailgun.pass
+            }
+        });
+
+        var templateContent = fs.readFileSync(templatePath, encoding = "utf8");
+
+        var mailOptions = {
+            from: config.testing.from, // sender address
+            to: recipient, // list of receivers
+            subject: config.testing.subject + ' - ' + template, // Subject line
+            html: templateContent, // html body
+            text: html_strip.html_strip(templateContent, options)
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                return util.log(error);
+            }else{
+                return util.log('Message sent: ' + info.response);
+            }
+        });
+
+    } catch (e) {
+        if(e.code == 'ENOENT') {
+            util.log('There was an error. Check your template name to make sure it exists in ' + prodUrl);
+        } else if(e instanceof TypeError) {
+            util.log('There was an error. Please check your config.json to make sure everything is spelled correctly');
+        } else {
+            util.log(e);
+        }
+    }
+}
