@@ -2,17 +2,17 @@
   "APIKEY": "Add your Mailchimp API Key",
 
   "testing": {
-    "from": "Email Address to send from",
-    "to": "Who do you want to send to? Comma separated",
-    "subject": "Subject for test email"
+    "from": "From Email Address",
+    "to": "TO Email Address",
+    "subject": "EMAIL SUBJECT"
   },
 
   "auth": {
     "mailgun": {
-        "user": "ukthapa",
-        "pass": "Utt@m1010"
+        "user": "SMTP USER",
+        "pass": "SMTP PASSWORD"
     }
   },
 
-  "litmus": "mayank@fusioncharts.com"
+  "litmus": "EMAIL ADDRESS"
 }

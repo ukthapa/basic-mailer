@@ -40,7 +40,7 @@ var gulp            = require( 'gulp' ),
 var assetsURL       = "./assets/", 
     devUrl          = "./dev/",
     prodUrl         = "./prod/",
-    liveURL         = "https://gallery.mailchimp.com/70067f73cf22a3620cb2d8867", // Use this url to replace the local image url to LIVE URL / Mailchimp URL or CDN url
+    liveURL         = "", // Use this url to replace the local image url to LIVE URL / Mailchimp URL or CDN url
     utmCode			= ""; // UTM Code
 
 
@@ -251,9 +251,6 @@ gulp.task('litmus', function () {
     return sendEmail(gutil.env.template, config.litmus);
 });
 
-
-
-
 function sendEmail(template, recipient) {
     try {
 
@@ -264,7 +261,7 @@ function sendEmail(template, recipient) {
             include_attributes : { 'alt': true }
         };
 
-        var templatePath = prodUrl + template;
+        var templatePath = prodUrl + template; // Inorder to send mail from dev environment, replace "prodUrl" by "devUrl"
 
         var transporter = nodemailer.createTransport({
             service: 'Mailgun',
@@ -294,7 +291,7 @@ function sendEmail(template, recipient) {
 
     } catch (e) {
         if(e.code == 'ENOENT') {
-            gutil.log('There was an error. Check your template name to make sure it exists in ' + prodUrl);
+            gutil.log('There was an error. Check your template name to make sure it exists in ' + prodUrl); // For dev environment, replace "prodUrl" by "devUrl"
         } else if(e instanceof TypeError) {
             gutil.log('There was an error. Please check your config.json to make sure everything is spelled correctly');
         } else {
